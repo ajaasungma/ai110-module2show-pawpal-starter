@@ -1,8 +1,8 @@
 import streamlit as st
+# Step 1: Bring specific classes from pawpal_system.py into app.py
 from pawpal_system import Owner, Pet, Task, Scheduler
 
 st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="centered")
-
 st.title("🐾 PawPal+")
 
 st.markdown(
@@ -50,8 +50,8 @@ if "tasks" not in st.session_state:
 owner = st.session_state.owner
 
 st.subheader("Quick Demo Inputs (UI only)")
-owner_name = st.text_input("Owner name", value= owner.name)
-owner.name = owner_name
+owner_name = st.text_input("Owner name", value=owner.name)
+owner.name = owner_name # Keep the object updated
 
 pet_name = st.text_input("Pet name", value="Mochi")
 species = st.selectbox("Species", ["dog", "cat", "other"])
@@ -65,10 +65,14 @@ with col1:
 with col2:
     duration = st.number_input("Duration (minutes)", min_value=1, max_value=240, value=20)
 with col3:
-    priority = st.selectbox("Priority", ["low", "medium", "high"], index=2)
+    priority = st.selectbox("Priority", ["High", "Medium", "Low"], index=0)
 
+# New field added to leverage our Phase 4 start time attributes
+start_time = st.text_input("Start Time (HH:MM)", value="08:00")
+
+# Step 3: Wiring UI Actions to Logic
 if st.button("Add task"):
-# 1. Ensure the pet exists on our owner object
+    # 1. Ensure the pet exists on our owner object
     existing_pets = [p for p in owner.pets if p.name == pet_name]
     if existing_pets:
         current_pet = existing_pets[0]
@@ -77,11 +81,12 @@ if st.button("Add task"):
         owner.add_pet(current_pet)
     
     # 2. Create the backend Task object and add it to the pet
-    new_task = Task(name=task_title, duration_mins=int(duration), priority=priority)
+    new_task = Task(name=task_title, duration_mins=int(duration), priority=priority, start_time_str=start_time)
     current_pet.add_task(new_task)
-
+    
+    # 3. Keep the simple dictionary table updated for the UI view
     st.session_state.tasks.append(
-        {"title": task_title, "duration_minutes": int(duration), "priority": priority}
+        {"title": task_title, "duration_minutes": int(duration), "priority": priority, "start_time": start_time}
     )
 
 if st.session_state.tasks:
@@ -95,13 +100,26 @@ st.divider()
 st.subheader("Build Schedule")
 st.caption("This button should call your scheduling logic once you implement it.")
 
+# Step 3: Connect your scheduler here and display results
 if st.button("Generate schedule"):
-# Create the scheduler engine with a fixed 60-minute time budget constraint
+    # Create the scheduler engine with a fixed 60-minute time budget constraint
     scheduler = Scheduler(max_time_budget_mins=60)
+    all_tasks = owner.get_all_tasks()
     
+    # --- STEP 1: ALGORITHMIC LAYER WARNINGS DISPLAY ---
+    # Scan for conflicts and display them prominently using st.warning
+    warnings = scheduler.detect_conflicts(all_tasks)
+    if warnings:
+        st.subheader("🚨 Task Scheduling Alerts")
+        for warning in warnings:
+            st.warning(warning)
+            
     # Call our backend calculation method
     optimized_plan = scheduler.generate_daily_plan(owner)
     
-    st.success("Generated Plan:")
-    for task in optimized_plan:
-        st.write(f"- **[{task.priority}]** {task.name} ({task.duration_mins} mins)")
+    st.subheader("🗓️ Generated Daily Plan")
+    if optimized_plan:
+        for task in optimized_plan:
+            st.write(f"- **[{task.start_time_str}]** **[{task.priority}]** {task.name} ({task.duration_mins} mins)")
+    else:
+        st.info("No tasks could fit within your timeframe configuration.")

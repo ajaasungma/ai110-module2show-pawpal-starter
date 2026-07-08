@@ -94,13 +94,27 @@ Confidence Level - 4
 
 ## 📸 Demo Walkthrough
 
-Describe your app in numbered steps so a reader can follow along without watching a video:
+### Main Features Implemented
+1. **Chronological Sorting by Time:** Formats and orders daily plans based on explicit task start times (`HH:MM`).
+2. **Interactive Conflict Warnings:** Alerts pet owners if tasks for their pets overlap in execution time slots.
+3. **Automated Task Recurrence:** Gracefully calculates and spawns the next occurrence date whenever daily or weekly events finish.
 
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
+### Example User Workflow
+1. **Define Owner & Pet Metadata:** Input profile information dynamically inside the application UI.
+2. **Inject Tasks with Varied Timestamps:** Add specific routines (e.g., a high-priority "Morning Walk" at `08:00` and "Feed Breakfast" at `08:00`).
+3. **Build and Optimize Schedule:** Click **Generate schedule**. The app displays an overlap alert message and arranges the valid agenda chronologically.
 
-**Screenshot or video** *(optional)*: <!-- Insert a screenshot or link to a demo video here -->
-
+### Verified CLI Output Tracking (`main.py`)
+```text
+⚠️ Conflict: 'Morning Walk' overlaps with 'Feed Breakfast' around 08:00.
+==================================================
+🐾 PAWPAL+ DAILY SCHEDULE FOR ALEX 🐾
+⏱️  Time Budget: 75 mins
+==================================================
+1. ⏳ [High]   Morning Walk (30 mins)
+2. ⏳ [High]   Feed Breakfast (15 mins)
+3. ⏳ [High]   insulin Shot (10 mins)
+4. ⏳ [Medium] Clean Litter Box (10 mins)
+--------------------------------------------------
+📊 Summary: Scheduled 4 tasks total | Time Used: 65/75 mins
+==================================================
