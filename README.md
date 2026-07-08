@@ -61,19 +61,27 @@ Paste a sample of your app's CLI or Streamlit output here so a reader can see wh
 
 ## 🧪 Testing PawPal+
 
-```bash
-# Run the full test suite:
-pytest
+python -m pytest
 
-# Run with coverage:
-pytest --cov
-```
+Task Recurrence Engine: Verifies timedelta date advancement when cycling daily or weekly tasks.
 
-Sample test output:
+Chronological Sorting: Ensures items align sequentially based on string time splits.
 
+Conflict Isolation: Confirms overlap warnings trigger safely on duplicate timestamps.
+
+Empty State Handling: Ensures an owner with an unconfigured pet safely resolves to an empty plan rather than throwing a runtime crash.
+
+========================== test session starts ===========================
+platform win32 -- Python 3.12.4, pytest-7.4.4, pluggy-1.0.0
+rootdir: C:\Users\ajaas\AI100\ai110-module2show-pawpal-starter
+plugins: anyio-4.2.0
+collected 4 items                                                         
+
+tests\test_pawpal.py ....                                           [100%]
+
+=========================== 4 passed in 0.05s ============================
 ```
-# Paste your pytest output here
-```
+Confidence Level - 4
 
 ## 📐 Smarter Scheduling
 
