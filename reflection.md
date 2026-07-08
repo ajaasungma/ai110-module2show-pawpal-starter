@@ -5,7 +5,13 @@
 **a. Initial design**
 
 - Briefly describe your initial UML design.
+The initial design focuses on an object-oriented approach to manage pet care routines dynamically with responsiblities separated across 4 classses.
 - What classes did you include, and what responsibilities did you assign to each?
+Included 4 classes:
+Owner:It holds user profile information and manages a collection of pets and overall schedules.
+Pet: Encapsulates core pet profiles like name, species, age, and special care notes
+Task: It acts as a pure data container tracking the activity name, time required (duration), urgency (priority), and status.
+Schedule: It takes a pool of tasks and an owner's total time budget constraint to sort, filter, and produce an optimized daily agenda.
 
 **b. Design changes**
 
